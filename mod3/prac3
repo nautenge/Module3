@@ -1,1 +1,105 @@
+using System;
+using System.Collections.Generic;
+
+public class User
+{
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Role { get; set; }
+
+    public User(string name, string email, string role)
+    {
+        Name = name;
+        Email = email;
+        Role = role;
+    }
+
+    public void Update(string name, string email, string role)
+    {
+        Name = name;
+        Email = email;
+        Role = role;
+    }
+
+    public override string ToString()
+    {
+        return $"Name: {Name}, Email: {Email}, Role: {Role}";
+    }
+}
+
+public class UserManager
+{
+    private List<User> _users = new List<User>();
+
+ 
+    public void AddUser(string name, string email, string role)
+    {
+        var user = new User(name, email, role);
+        _users.Add(user);
+        Console.WriteLine($"User {name} added.");
+    }
+
+
+    public void RemoveUser(string email)
+    {
+        var user = _users.Find(u => u.Email == email);
+        if (user != null)
+        {
+            _users.Remove(user);
+            Console.WriteLine($"User {user.Name} removed.");
+        }
+        else
+        {
+            Console.WriteLine("User not found.");
+        }
+    }
+
+
+    public void UpdateUser(string email, string newName, string newEmail, string newRole)
+    {
+        var user = _users.Find(u => u.Email == email);
+        if (user != null)
+        {
+            user.Update(newName, newEmail, newRole);
+            Console.WriteLine($"User {newName} updated.");
+        }
+        else
+        {
+            Console.WriteLine("User not found.");
+        }
+    }
+
+
+    public void PrintUsers()
+    {
+        foreach (var user in _users)
+        {
+            Console.WriteLine(user);
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var userManager = new UserManager();
+
+        userManager.AddUser("John Doe", "john.doe@example.com", "Admin");
+        userManager.AddUser("Jane Smith", "jane.smith@example.com", "User");
+
+        Console.WriteLine("\nCurrent users:");
+        userManager.PrintUsers();
+
+        userManager.UpdateUser("john.doe@example.com", "John Updated", "john.new@example.com", "Admin");
+
+        Console.WriteLine("\nUpdated users:");
+        userManager.PrintUsers();
+
+        userManager.RemoveUser("jane.smith@example.com");
+
+        Console.WriteLine("\nAfter removal:");
+        userManager.PrintUsers();
+    }
+}
 
